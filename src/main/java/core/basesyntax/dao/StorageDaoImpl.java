@@ -22,4 +22,11 @@ public class StorageDaoImpl implements StorageDao {
         }
         return null;
     }
+
+    @Override
+    public void clear() {
+        Storage.people.clear();
+        // Resetujemy index, aby testy były powtarzalne (ważne!)
+        index = 0L;
+    }
 }

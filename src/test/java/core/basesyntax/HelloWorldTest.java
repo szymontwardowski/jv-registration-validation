@@ -4,77 +4,122 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import core.basesyntax.dao.StorageDao;
+import core.basesyntax.dao.StorageDaoImpl;
 import core.basesyntax.model.User;
 import core.basesyntax.service.RegistrationService;
 import core.basesyntax.service.RegistrationServiceImpl;
 import core.basesyntax.service.UserValidationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class HelloWorldTest {
     private final RegistrationService registrationService = new RegistrationServiceImpl();
+    private final StorageDao storageDao = new StorageDaoImpl();
+
+    // Metoda @BeforeEach czyści magazyn przed KAŻDYM testem!
+    @BeforeEach
+    public void setUp() {
+        storageDao.clear();
+    }
+
+    // --- TESTY NA WARTOŚCI NULL ---
 
     @Test
-    public void register_invalidData_throwsException() {
-        // Test na za krotki login
-        User shortLoginUser = new User();
-        shortLoginUser.setLogin("abc"); // mniej niż 6 znakow
-        shortLoginUser.setPassword("password123");
-        shortLoginUser.setAge(20);
-        assertThrows(
-                UserValidationException.class,
-                () -> registrationService.register(shortLoginUser)
-        );
+    public void shouldThrowException_whenUserIsNull() {
+        assertThrows(UserValidationException.class, () -> registrationService.register(null));
+    }
 
-        // Test na za mlody wiek
-        User underageUser = new User();
-        underageUser.setLogin("validLogin");
-        underageUser.setPassword("password123");
-        underageUser.setAge(17); // ponizej 18
-        assertThrows(
-                UserValidationException.class,
-                () -> registrationService.register(underageUser)
-        );
+    @Test
+    public void shouldThrowException_whenLoginIsNull() {
+        User user = new User();
+        user.setPassword("password123");
+        user.setAge(20);
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
 
-        // Test na za krotkie haslo
-        User shortPasswordUser = new User();
-        shortPasswordUser.setLogin("validLogin2");
-        shortPasswordUser.setPassword("123"); // krótkie hasło
-        shortPasswordUser.setAge(20);
-        assertThrows(
-                UserValidationException.class,
-                () -> registrationService.register(shortPasswordUser)
-        );
+    @Test
+    public void shouldThrowException_whenPasswordIsNull() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setAge(20);
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
 
-        // Test na istniejacego uzytkownika
+    @Test
+    public void shouldThrowException_whenAgeIsNull() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("password123");
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
+
+    // --- TESTY NA WALIDACJĘ (Granice i Skrajne) ---
+
+    @Test
+    public void shouldThrowException_whenLoginIsFiveChars() {
+        User user = new User();
+        user.setLogin("abcde");
+        user.setPassword("password123");
+        user.setAge(20);
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    public void shouldThrowException_whenPasswordIsFiveChars() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("12345");
+        user.setAge(20);
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    public void shouldThrowException_whenUserIsSeventeen() {
+        User user = new User();
+        user.setLogin("validLogin");
+        user.setPassword("password123");
+        user.setAge(17);
+        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    public void shouldThrowException_whenLoginAlreadyExists() {
+        // 1. Zarejestruj pierwszego użytkownika
         User firstUser = new User();
         firstUser.setLogin("uniqueLogin");
         firstUser.setPassword("password123");
         firstUser.setAge(20);
         registrationService.register(firstUser);
 
+        // 2. Spróbuj zarejestrować duplikat
         User duplicateUser = new User();
-        duplicateUser.setLogin("uniqueLogin"); // ten sam login
+        duplicateUser.setLogin("uniqueLogin");
         duplicateUser.setPassword("password456");
         duplicateUser.setAge(25);
-        assertThrows(
-                UserValidationException.class,
-                () -> registrationService.register(duplicateUser)
-        );
+
+        assertThrows(UserValidationException.class, () -> registrationService.register(duplicateUser));
     }
 
-    @Test
-    public void register_validData_ok() {
+    // --- TEST SUKCESU ---
 
+    @Test
+    public void shouldRegister_whenValidDataIsProvided() {
         User newUser = new User();
-        newUser.setId(1L);
-        newUser.setLogin("validlogin");
+        newUser.setLogin("validlogin6");
         newUser.setPassword("password123");
-        newUser.setAge(22);
+        newUser.setAge(18); // Wartość graniczna wieku
         User registeredUser = registrationService.register(newUser);
 
+        // Asercja 1: Został zwrócony obiekt User
         assertNotNull(registeredUser);
 
-        assertEquals("validlogin", registeredUser.getLogin());
+        // Asercja 2: Sprawdzenie zapisu w magazynie (KLUCZOWA ASERCJA!)
+        User userFromStorage = storageDao.get("validlogin6");
+        assertNotNull(userFromStorage, "Registered user should be found in storage.");
 
+        // Asercja 3: Sprawdzenie poprawności danych
+        assertEquals("validlogin6", userFromStorage.getLogin());
+        assertEquals(18, registeredUser.getAge());
     }
 }
