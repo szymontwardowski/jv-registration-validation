@@ -5,6 +5,9 @@ import core.basesyntax.dao.StorageDaoImpl;
 import core.basesyntax.model.User;
 
 public class RegistrationServiceImpl implements RegistrationService {
+    private static final int MIN_AGE = 18; // Stała dla minimalnego wieku
+    private static final int MIN_LENGTH = 6; // Stała dla minimalnej długości loginu/hasła
+
     private final StorageDao storageDao = new StorageDaoImpl();
 
     @Override
@@ -24,8 +27,9 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserValidationException("Age cannot be null.");
         }
 
-        if (user.getLogin().length() < 6) {
-            throw new UserValidationException("Login must be at least 6 characters long.");
+        // Użycie stałej MIN_LENGTH
+        if (user.getLogin().length() < MIN_LENGTH) {
+            throw new UserValidationException("Login must be at least " + MIN_LENGTH + " characters long.");
         }
 
         User existingUser = storageDao.get(user.getLogin());
@@ -33,12 +37,14 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserValidationException("Login already exist.");
         }
 
-        if (user.getAge() < 18) {
-            throw new UserValidationException("You must be 18 or older.");
+        // Użycie stałej MIN_AGE
+        if (user.getAge() < MIN_AGE) {
+            throw new UserValidationException("You must be " + MIN_AGE + " or older.");
         }
 
-        if (user.getPassword().length() < 6) {
-            throw new UserValidationException("Password must be at least 6 characters long.");
+        // Użycie stałej MIN_LENGTH
+        if (user.getPassword().length() < MIN_LENGTH) {
+            throw new UserValidationException("Password must be at least " + MIN_LENGTH + " characters long.");
         }
 
         return storageDao.add(user);
