@@ -22,8 +22,6 @@ public class HelloWorldTest {
         storageDao.clear();
     }
 
-    // --- TESTY NA WARTOŚCI NULL ---
-
     @Test
     public void register_userIsNull_throwsException() { // Zgodne z konwencją
         assertThrows(UserValidationException.class, () -> registrationService.register(null));
@@ -52,8 +50,6 @@ public class HelloWorldTest {
         user.setPassword("password123");
         assertThrows(UserValidationException.class, () -> registrationService.register(user));
     }
-
-    // --- TESTY NA WALIDACJĘ ---
 
     @Test
     public void register_loginTooShort_throwsException() { // Zgodne z konwencją
@@ -91,7 +87,6 @@ public class HelloWorldTest {
         firstUser.setAge(20);
         storageDao.add(firstUser);
 
-        // TESTOWANIE: Metoda register() powinna wykryć duplikat
         User duplicateUser = new User();
         duplicateUser.setLogin("uniqueLogin");
         duplicateUser.setPassword("password456");
@@ -99,8 +94,6 @@ public class HelloWorldTest {
 
         assertThrows(UserValidationException.class, () -> registrationService.register(duplicateUser));
     }
-
-    // --- TEST SUKCESU ---
 
     @Test
     public void register_validUser_returnsRegisteredUser() { // Zgodne z konwencją
