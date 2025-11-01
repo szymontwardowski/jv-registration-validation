@@ -6,3 +6,5 @@ public class UserValidationException extends RuntimeException {
         super(message);
     }
 }
+
+
