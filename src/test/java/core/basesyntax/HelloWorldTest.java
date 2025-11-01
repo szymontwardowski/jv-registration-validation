@@ -23,11 +23,12 @@ public class HelloWorldTest {
         storageDao.clear();
     }
 
-    // --- TESTY NA WARTOŚCI NULL ---
-
     @Test
     public void shouldThrowException_whenUserIsNull() {
-        assertThrows(UserValidationException.class, () -> registrationService.register(null));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(null)
+        );
     }
 
     @Test
@@ -35,7 +36,10 @@ public class HelloWorldTest {
         User user = new User();
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -43,7 +47,10 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -51,10 +58,11 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("password123");
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
-
-    // --- TESTY NA WALIDACJĘ (Granice i Skrajne) ---
 
     @Test
     public void shouldThrowException_whenLoginIsFiveChars() {
@@ -62,7 +70,10 @@ public class HelloWorldTest {
         user.setLogin("abcde");
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -71,7 +82,10 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("12345");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -80,7 +94,10 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("password123");
         user.setAge(17);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -98,10 +115,11 @@ public class HelloWorldTest {
         duplicateUser.setPassword("password456");
         duplicateUser.setAge(25);
 
-        assertThrows(UserValidationException.class, () -> registrationService.register(duplicateUser));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(duplicateUser)
+        );
     }
-
-    // --- TEST SUKCESU ---
 
     @Test
     public void shouldRegister_whenValidDataIsProvided() {

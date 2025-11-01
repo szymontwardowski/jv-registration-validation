@@ -59,3 +59,4 @@ public class User {
         return Objects.hash(login, password, age);
     }
 }
+
