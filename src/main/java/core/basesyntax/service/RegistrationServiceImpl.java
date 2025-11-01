@@ -27,9 +27,10 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserValidationException("Age cannot be null.");
         }
 
-        // Użycie stałej MIN_LENGTH
         if (user.getLogin().length() < MIN_LENGTH) {
-            throw new UserValidationException("Login must be at least " + MIN_LENGTH + " characters long.");
+            // Przełamana linia, by uniknąć LineLength
+            throw new UserValidationException("Login must be at least " + MIN_LENGTH
+                    + " characters long.");
         }
 
         User existingUser = storageDao.get(user.getLogin());
@@ -37,14 +38,14 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserValidationException("Login already exist.");
         }
 
-        // Użycie stałej MIN_AGE
         if (user.getAge() < MIN_AGE) {
             throw new UserValidationException("You must be " + MIN_AGE + " or older.");
         }
 
-        // Użycie stałej MIN_LENGTH
         if (user.getPassword().length() < MIN_LENGTH) {
-            throw new UserValidationException("Password must be at least " + MIN_LENGTH + " characters long.");
+            // Przełamana linia, by uniknąć LineLength
+            throw new UserValidationException("Password must be at least " + MIN_LENGTH
+                    + " characters long.");
         }
 
         return storageDao.add(user);

@@ -22,12 +22,13 @@ public class HelloWorldTest {
         storageDao.clear();
     }
 
+    // --- TESTY NA WARTOŚCI NULL (Wcięcia poprawione) ---
+
     @Test
     public void register_userIsNull_throwsException() {
-        assertThrows
-                (UserValidationException.class,
-                        () -> registrationService.register(null)
-                );
+        assertThrows(UserValidationException.class,
+                () -> registrationService.register(null)
+        );
     }
 
     @Test
@@ -35,8 +36,7 @@ public class HelloWorldTest {
         User user = new User();
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
@@ -46,8 +46,7 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setAge(20);
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
@@ -57,11 +56,12 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("password123");
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
+
+    // --- TESTY NA WALIDACJĘ (Wcięcia poprawione) ---
 
     @Test
     public void register_loginTooShort_throwsException() {
@@ -69,8 +69,7 @@ public class HelloWorldTest {
         user.setLogin("abcde");
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
@@ -81,8 +80,7 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("12345");
         user.setAge(20);
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
@@ -93,8 +91,7 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("password123");
         user.setAge(17);
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(user)
         );
     }
@@ -112,11 +109,12 @@ public class HelloWorldTest {
         duplicateUser.setPassword("password456");
         duplicateUser.setAge(25);
 
-        assertThrows(
-                UserValidationException.class,
+        assertThrows(UserValidationException.class,
                 () -> registrationService.register(duplicateUser)
         );
     }
+
+    // --- TEST SUKCESU ---
 
     @Test
     public void register_validUser_returnsRegisteredUser() {
@@ -128,7 +126,6 @@ public class HelloWorldTest {
 
         assertNotNull(registeredUser);
 
-        // Asercja zapisu (przeszedł w poprzedniej weryfikacji)
         User userFromStorage = storageDao.get("validlogin6");
         assertNotNull(userFromStorage, "Registered user should be found in storage.");
 
