@@ -24,7 +24,10 @@ public class HelloWorldTest {
 
     @Test
     public void register_userIsNull_throwsException() { // Zgodne z konwencją
-        assertThrows(UserValidationException.class, () -> registrationService.register(null));
+        assertThrows
+                (UserValidationException.class,
+                        () -> registrationService.register(null)
+                );
     }
 
     @Test
@@ -32,7 +35,10 @@ public class HelloWorldTest {
         User user = new User();
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -40,7 +46,10 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -48,7 +57,10 @@ public class HelloWorldTest {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("password123");
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -57,7 +69,10 @@ public class HelloWorldTest {
         user.setLogin("abcde");
         user.setPassword("password123");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -66,7 +81,10 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("12345");
         user.setAge(20);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
@@ -75,12 +93,14 @@ public class HelloWorldTest {
         user.setLogin("validLogin");
         user.setPassword("password123");
         user.setAge(17);
-        assertThrows(UserValidationException.class, () -> registrationService.register(user));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(user)
+        );
     }
 
     @Test
-    public void register_loginAlreadyExists_throwsException() { // Zgodne z konwencją
-        // PRZYGOTOWANIE STANU: Dodajemy użytkownika bezpośrednio przez DAO [CHECKLIST ITEM #8]
+    public void register_loginAlreadyExists_throwsException() {
         User firstUser = new User();
         firstUser.setLogin("uniqueLogin");
         firstUser.setPassword("password123");
@@ -92,7 +112,10 @@ public class HelloWorldTest {
         duplicateUser.setPassword("password456");
         duplicateUser.setAge(25);
 
-        assertThrows(UserValidationException.class, () -> registrationService.register(duplicateUser));
+        assertThrows(
+                UserValidationException.class,
+                () -> registrationService.register(duplicateUser)
+        );
     }
 
     @Test
