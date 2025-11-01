@@ -23,7 +23,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_userIsNull_throwsException() { // Zgodne z konwencją
+    public void register_userIsNull_throwsException() {
         assertThrows
                 (UserValidationException.class,
                         () -> registrationService.register(null)
@@ -31,7 +31,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_loginIsNull_throwsException() { // Zgodne z konwencją
+    public void register_loginIsNull_throwsException() {
         User user = new User();
         user.setPassword("password123");
         user.setAge(20);
@@ -42,7 +42,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_passwordIsNull_throwsException() { // Zgodne z konwencją
+    public void register_passwordIsNull_throwsException() {
         User user = new User();
         user.setLogin("validLogin");
         user.setAge(20);
@@ -53,7 +53,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_ageIsNull_throwsException() { // Zgodne z konwencją
+    public void register_ageIsNull_throwsException() {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("password123");
@@ -64,7 +64,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_loginTooShort_throwsException() { // Zgodne z konwencją
+    public void register_loginTooShort_throwsException() {
         User user = new User();
         user.setLogin("abcde");
         user.setPassword("password123");
@@ -76,7 +76,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_passwordTooShort_throwsException() { // Zgodne z konwencją
+    public void register_passwordTooShort_throwsException() {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("12345");
@@ -88,7 +88,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_userUnderage_throwsException() { // Zgodne z konwencją
+    public void register_userUnderage_throwsException() {
         User user = new User();
         user.setLogin("validLogin");
         user.setPassword("password123");
@@ -119,7 +119,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void register_validUser_returnsRegisteredUser() { // Zgodne z konwencją
+    public void register_validUser_returnsRegisteredUser() {
         User newUser = new User();
         newUser.setLogin("validlogin6");
         newUser.setPassword("password123");
